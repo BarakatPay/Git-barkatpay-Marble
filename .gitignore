@@ -13,3 +13,5 @@
 key.json
 .env
 .env.dev
+logs/*.ndjson
+logs/*.bak*
