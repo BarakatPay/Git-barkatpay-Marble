@@ -28,3 +28,12 @@ ack-latest:
 	./scripts/alerts_ack.sh $$id approved "ok to proceed"; \
 	echo "Latest actionable alert acked: $$id"; \
 	[ -f logs/compliance_processed.ndjson ] && tail -n 1 logs/compliance_processed.ndjson | jq . || true
+
+.PHONY: reset-queues
+reset-queues:
+	@mkdir -p logs
+	@[ -f logs/compliance_queue.ndjson ] && cp logs/compliance_queue.ndjson logs/compliance_queue.ndjson.bak.$(shell date +%s) || true
+	@[ -f logs/compliance_processed.ndjson ] && cp logs/compliance_processed.ndjson logs/compliance_processed.ndjson.bak.$(shell date +%s) || true
+	@> logs/compliance_queue.ndjson
+	@> logs/compliance_processed.ndjson
+	@echo "Queues reset. (Backups created if files existed.)"
